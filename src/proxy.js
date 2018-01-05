@@ -11,7 +11,6 @@ export const proxyStateForUI = (st, prefix) => {
         const namespace = Object.keys(prefix).find(namespace => namespace === name);
         if (namespace) {
             state[namespace] = st[namespace][prefix[namespace]];
-
         }
     });
 
@@ -52,9 +51,8 @@ export const proxyReducer = (reducers) => {
     return Object.keys(reducers).reduce((ret, key) => {
         ret[key] = (state, action) => {
             const prefix = action.meta.prefix;
-
             const result = reducers[key](state[prefix], action);
-            console.log(prefix, action, result)
+
             return {
                 ...state,
                 [action.meta.prefix]: {

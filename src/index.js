@@ -2,7 +2,7 @@ import React from 'react';
 import invariant from 'invariant';
 import {setCache, getCache} from "./cache";
 import {proxyStateForUI, proxyReducer} from "./proxy";
-import wrappedCallbacks from './mapDispatchToProps';
+import wrapCallbacks from './wrapCallbacks';
 
 export default function (app, connect) {
 
@@ -23,7 +23,7 @@ export default function (app, connect) {
                         return <Component {...this.props} />;
                     }
 
-                    const mapDispatchToProps = wrappedCallbacks(app, callbacks, prefix);
+                    const mapDispatchToProps = wrapCallbacks(app, callbacks, prefix);
 
                     const mapStateToProps = (...args) => {
                         const [state, ...extArgs] = args;
