@@ -32,21 +32,22 @@ app.js 引入dva-plugin-build-common-component
 import dva, {connect} from 'dva';
 import buildCommonComponent from 'dva-plugin-build-common-component';
 
-export const app = dva();
+const app = dva();
 
-export const {$model, $connect} = buildCommonComponent(app, connect);
+export default app;
+export const {$connect, $model} = buildCommonComponent(app, connect);
 
 ```
 
 index.js 入口处注入公共组件的model
 ```javascript
-import app, {$model} from './app.js';
-import modelList from './path/to/normal/models';
-import commonModelList from './path/to/commonModels';
+import app, {$model} from './app';
+import models from './models';
+import commonModels from './commonModels';
 
 
-modelList.map(model => app.model(model));
-commonModelList.map(model => $model(model)) // 在这里注入公共组件的model
+models.map(model => app.model(model));
+commonModels.map(model => $model(model)); // 在这里注入公共组件的model
 ```
 
 #### 编写公共组件 model 多加一个字段prefix，组件编写时使用$connect, 组件引用时传入相应的prefix
@@ -54,62 +55,78 @@ eg:
 model todo.js 相对之前多加一个prefix字段，需为数组格式
 ```javascript
 export default {
-    namespace: 'count',
-    prefix: ['count1', 'count2'], // 多加一个prefix字段, state 将会根据该字段被分发为多份
+    namespace: 'name',
+    prefix: ['tabA', 'tabB', 'tabC'], // 多加一个prefix字段, state 将会根据该字段被分发为多份
     state: {
-        count: 0,
+        value: ''
     },
     reducers: {
-        addCount(state) {
+        changeValue(state, {payload: value}) {
+            console.log(value)
             return {
                 ...state,
-                count: state.count++
+                value
             }
         }
     },
-    //...
-}
+
+};
 ```
 
 index.js 使用组件时，用$connect 包裹，第一个参数还是原来的mapStateToProps，
 第二个参数为一个对象，对象内的方法会以参数方式传给UI
+(ps: 对象内的每个方法都已经在插件内部为其注入了第一个参数{dispatch, getState))
 ```js
-import {$connect} from 'app';
-export default $connect(
-    ({count})=> {
-        return {
-            count: count++
-        }
-    },
-    {
-        onAdd({dispatch, getState}, ...args) {
-            dispatch({
-                type: 'count/addCount'
-            })
-        }
-    }
-)(UI); 
+const UI =  ({label = '姓名', className = '', value, onChange}) => {
+    const textFieldProps = {
+        label,
+        className,
+        value,
+        onChange
+    };
 
-function UI({count, onAdd}) {
-  return ({onAdd}) => {
-      return <div>
-            <span onClick={onAdd()}>{count}</span>
-        </div>
-  }
-}
+    return <TextField {...textFieldProps} />;
+};
+
+const callbacks = {
+    onChange({dispatch, getState}, event) {
+        dispatch({
+            type: 'name/changeValue',
+            payload: event.target.value
+        })
+    }
+};
+
+const getUIState = function ({name}) {
+    return {
+        value: name.value
+    }
+};
+
+export default $connect(getUIState, callbacks)(UI);
 
 
 ```
  
  UI引用时仅仅需要多传入一个参数prefix, prefix是一个对象
 ```js
-import Count from './path/../';
+const UI = function({value, dispatch}) {
+    return (
+        <div className="container">
+            <Tabs value={value} onChange={(e, value) => handleChange(dispatch, value)}>
+                {
+                    Object.keys(TAB_VALUE_MAP).map(key => {
+                        return <Tab key={key} label={TAB_VALUE_MAP[key]} value={key} />
+                    })
+                }
+            </Tabs>
+            <div className="main">
+                <Name {...{prefix: {name: value}, label: LABEL_MAP[value]}}/>
+            </div>
 
-export default () => {
-    return <div>
-    // otherElement
-    <Count {{prefix: {count: 'count1'}}}/>
-    <Count {{prefix: {count: 'count2'}}}/>
-</div>
-}
+        </div>
+    );
+};
 ```
+
+// 具体参照example下的代码
