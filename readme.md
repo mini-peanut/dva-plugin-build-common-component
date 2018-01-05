@@ -21,11 +21,11 @@
 - 引用组件时，传入prefix，格式为{namespace: prefix} 这个参数决定了
  1. getUIState，找到相应的namespace时，会映射到哪个prefix上的数据
  2. getState 会在找到相应的model后，找到哪个prefix上的数据
- 2. dispatch 时会将action额外附加上这个参数，prefix
- 3. reducer收到dispatch的action后，会根据action的prefix，决定最终更新哪个prefix下的state
+ 2. dispatch 时会将action.meta附加上这个参数，prefix
+ 3. reducer收到dispatch的action后，会根据action.meta的prefix，决定最终更新哪个prefix下的state
 
 ### 如何用
-app.js 引入deef-plugin-build-common-component
+app.js 引入dva-plugin-build-common-component
 
 #### 项目引用 引入插件将实例化的dva，与connect传入得到$model, $connect 方法
 ```js
