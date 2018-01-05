@@ -6,12 +6,11 @@
 
 如果还用普通的dva组件形式，共用同一份model数据，相互之间会产生干扰（组件可以实例化多份，但model是单例的）
 
-本插件结合两者的优势，在model中加入prefix字段，数据的读写都自动代理到相应prefix中，使用起来更简单，一个model即可解决deef(redux)中
+本插件结合两者的优势，在model中加入prefix字段，数据的读写都自动代理到相应prefix中，使用起来更简单，一个model即可解决redux体系中
 公共业务组件中model会产生相互干扰的情况
 
 
 ## 特点
-- 除了model中加入prefix字段和组件实例化时额外插入一个prefix参数, 其他的写法完全与dva组件一致
 - 只有两个api($connect, $model)，上手成本低
 - 组件更易于维护
 - 数据之间不会产生干扰
