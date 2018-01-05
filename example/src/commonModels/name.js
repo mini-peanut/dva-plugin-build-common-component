@@ -6,7 +6,6 @@ export default {
     },
     reducers: {
         changeValue(state, {payload: value}) {
-            console.log(value)
             return {
                 ...state,
                 value
