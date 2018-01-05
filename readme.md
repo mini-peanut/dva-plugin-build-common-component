@@ -25,7 +25,7 @@
  3. reducer收到dispatch的action后，会根据action.meta的prefix，决定最终更新哪个prefix下的state
 
 ### 如何用
-app.js 引入deef-plugin-build-common-component
+app.js 引入dva-plugin-build-common-component
 
 #### 项目引用 引入插件将实例化的dva，与connect传入得到$model, $connect 方法
 ```js
