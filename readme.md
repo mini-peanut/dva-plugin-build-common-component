@@ -14,7 +14,7 @@
 - 只有两个api($connect, $model)，上手成本低
 - 组件更易于维护
 - 数据之间不会产生干扰
-- 从重复的reducer，handler解脱出来，不需要为了不同组件中，数据的独立，重复写state，reducer，handler，dispatch等
+- 从重复的state，reducer，handler解脱出来，不需要为了同一组件的实例化，搞多份代码
 
 ## 原理
 
