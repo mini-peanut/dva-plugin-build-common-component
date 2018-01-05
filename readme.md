@@ -111,23 +111,7 @@ export default $connect(getUIState, callbacks)(UI);
  
  UI引用时仅仅需要多传入一个参数prefix, prefix是一个对象
 ```js
-const UI = function({value, dispatch}) {
-    return (
-        <div className="container">
-            <Tabs value={value} onChange={(e, value) => handleChange(dispatch, value)}>
-                {
-                    Object.keys(TAB_VALUE_MAP).map(key => {
-                        return <Tab key={key} label={TAB_VALUE_MAP[key]} value={key} />
-                    })
-                }
-            </Tabs>
-            <div className="main">
-                <Name {...{prefix: {name: value}, label: LABEL_MAP[value]}}/>
-            </div>
-
-        </div>
-    );
-};
+ <Name {...{prefix: {name: value}, label: LABEL_MAP[value]}}/>
 ```
 
 // 具体参照example下的代码
