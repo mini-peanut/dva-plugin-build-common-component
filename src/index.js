@@ -14,6 +14,9 @@ export default function (app, connect) {
     function $connect(getUIState, callbacks, ...connectArgs) {
         return UI => {
             class ComponentWithPrefix extends React.Component {
+                constructor(props) {
+                    super(props);
+                }
                 render() {
                     const prefix = this.props.prefix;
                     const cachePath = [getUIState, UI, callbacks, JSON.stringify(prefix)];
@@ -55,7 +58,6 @@ export default function (app, connect) {
         // reducers
         m.reducers = proxyReducer(m.reducers);
 
-        console.log(m);
         app.model(m);
     }
 }

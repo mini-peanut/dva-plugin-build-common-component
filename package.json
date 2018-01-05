@@ -1,6 +1,6 @@
 {
   "name": "dva-plugin-build-common-component",
-  "version": "1.0.0",
+  "version": "1.0.7",
   "description": "用于封装大型dva公共业务组件",
   "main": "./lib/index.js",
   "scripts": {
@@ -31,5 +31,10 @@
     "lodash": "^4.17.4",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
-  }
+  },
+  "files": [
+    "src",
+    "lib",
+    "README.md"
+  ]
 }
